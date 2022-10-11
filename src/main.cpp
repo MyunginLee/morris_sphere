@@ -23,9 +23,22 @@
 
 #include "Gamma/Analysis.h"
 #include "Gamma/scl.h"
+#include <vector>
+#include <fstream>
 
 using namespace al;
+using namespace std;
 
+string slurp(string fileName) {
+  fstream file(fileName);
+  string returnValue = "";
+  while (file.good()) {
+    string line;
+    getline(file, line);
+    returnValue += line + "\n";
+  }
+  return returnValue;
+}
 struct SharedState {
   float meterValues[64] = {0};
 };
@@ -154,7 +167,11 @@ public:
 
   PersistentConfig config;
   DownMixer downMixer;
-
+  ShaderProgram pointShader;
+  ShaderProgram lineShader;
+  Texture pointTexture;
+  Texture lineTexture;
+  Light light;
   void setPath(std::string path) {
     rootDir = al::File::conformDirectory(path);
     mSequencer.setDirectory(rootDir);
@@ -208,6 +225,41 @@ public:
     addSphere(mObjectMesh, 0.1, 8, 4);
     mObjectMesh.update();
     mMeter.init(mSpatializer->speakerLayout());
+   // use a texture to control the alpha channel of each particle
+    // //
+    // pointTexture.create2D(256, 256, Texture::R8, Texture::RED, Texture::SHORT);
+    // int Nx = pointTexture.width();
+    // int Ny = pointTexture.height();
+    // std::vector<short> alpha;
+    // alpha.resize(Nx * Ny);
+    // for (int j = 0; j < Ny; ++j) {
+    //   float y = float(j) / (Ny - 1) * 2 - 1;
+    //   for (int i = 0; i < Nx; ++i) {
+    //     float x = float(i) / (Nx - 1) * 2 - 1;
+    //     float m = exp(-13 * (x * x + y * y));
+    //     m *= pow(2, 15) - 1;  // scale by the largest positive short int
+    //     alpha[j * Nx + i] = m;
+    //   }
+    // }
+    // pointTexture.submit(&alpha[0]);
+
+    // lineTexture.create1D(256, Texture::R8, Texture::RED, Texture::SHORT);
+    // std::vector<short> beta;
+    // beta.resize(lineTexture.width());
+    // for (int i = 0; i < beta.size(); ++i) {
+    //   beta[i] = alpha[128 * beta.size() + i];
+    // }
+    // lineTexture.submit(&beta[0]);
+
+    // // compile and link the shaders
+    // //
+    // pointShader.compile(slurp("shades/point-vertex.glsl"),
+    //                     slurp("shades/point-fragment.glsl"),
+    //                     slurp("shades/point-geometry.glsl"));
+    // lineShader.compile(slurp("shades/line-vertex.glsl"),
+    //                    slurp("shades/line-fragment.glsl"),
+    //                    slurp("shades/line-geometry.glsl"));
+
   }
 
   void onAnimate(double dt) override {
@@ -223,6 +275,11 @@ public:
 
   void onDraw(Graphics &g) override {
     g.clear(0, 0, 0);
+    light.pos(0,0,0);
+    gl::depthTesting(true);
+    g.lighting(true);
+    g.blendAdd();
+    g.polygonMode(GL_FILL);
     g.pushMatrix();
     if (isPrimary()) {
       // For simulator view from outside
@@ -230,14 +287,15 @@ public:
     }
     {
       g.pushMatrix();
-      g.polygonLine();
+      // g.polygonLine();
       g.scale(10);
       g.color(0.5);
-      g.draw(mSphereMesh);
+      // g.draw(mSphereMesh);
       g.popMatrix();
     }
+    // lineTexture.bind();
     mMeter.draw(g);
-
+    // lineTexture.unbind();
     mSequencer.render(g);
     g.popMatrix();
   }
