@@ -111,8 +111,9 @@ public:
     }
     rotate += env * 10;
     g.color(c *env*100 + HSV(env*5, env*100, 1));
+    g.translate(pose().pos() * 3);
     g.rotate(init_rotate+rotate, init_angle);
-    g.scale(0.01, 3, 0.01);
+    g.scale(0.1, 3, 0.1);
     g.scale(0.1 + gain + env * 10);
     // g.polygonLine();
     g.draw(mesh);
