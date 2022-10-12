@@ -110,7 +110,7 @@ public:
       env = mEnvFollow.value();
     }
     rotate += env * 10;
-    g.color(c + HSV(env, env, env) );
+    g.color(c + HSV(env, env, 1+env) );
     g.rotate(init_rotate+rotate, init_angle);
     g.scale(0.01, 0.3, 0.01);
     g.scale(0.1 + gain + env * 10);
