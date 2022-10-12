@@ -72,7 +72,9 @@ public:
   // Internal
   Parameter env{"env", "", 1.0, 0.00001, 10};
   // float global_time, time_step;
-
+  Vec3f init_angle = Vec3f(al::rnd::uniform(), al::rnd::uniform(), al::rnd::uniform());
+  float init_rotate = al::rnd::uniform(720);
+  float rotate = 0;
   void init() override {
     registerTriggerParameters(file, automation, gain);
     registerParameters(env);             // Propagate from audio rendering node
@@ -107,10 +109,12 @@ public:
     if (isPrimary()) {
       env = mEnvFollow.value();
     }
-    g.scale(0.5);
+    rotate += env * 10;
+    g.color(c + HSV(env, env, env) );
+    g.rotate(init_rotate+rotate, init_angle);
+    g.scale(0.01, 0.3, 0.01);
     g.scale(0.1 + gain + env * 10);
-    g.color(c);
-    g.polygonLine();
+    // g.polygonLine();
     g.draw(mesh);
     // cout << global_time << endl;
   }
@@ -222,7 +226,7 @@ public:
     // Prepare mesh
     addSphere(mSphereMesh, 0.1);
     mSphereMesh.update();
-    addSphere(mObjectMesh, 0.1, 8, 4);
+    addCube(mObjectMesh);
     mObjectMesh.update();
     mMeter.init(mSpatializer->speakerLayout());
   
