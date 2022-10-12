@@ -225,6 +225,8 @@ public:
     addSphere(mObjectMesh, 0.1, 8, 4);
     mObjectMesh.update();
     mMeter.init(mSpatializer->speakerLayout());
+  
+    lens().fovy(45).eyeSep(0);
    // use a texture to control the alpha channel of each particle
     // //
     // pointTexture.create2D(256, 256, Texture::R8, Texture::RED, Texture::SHORT);
