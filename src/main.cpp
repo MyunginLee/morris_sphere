@@ -111,9 +111,11 @@ public:
     }
     rotate += env * 10;
     g.color(c *env*100 + HSV(env*5, env*100, 1));
+    g.translate(pose().pos()*5);
+
     g.rotate(init_rotate+rotate, init_angle);
-    g.scale(0.01, 0.3, 0.01);
-    g.scale(0.1 + gain + env * 10);
+    g.scale(0.01, 3, 0.01);
+    g.scale(0.5 + gain + env * 10);
     // g.polygonLine();
     g.draw(mesh);
     // cout << global_time << endl;
@@ -231,7 +233,7 @@ public:
     mMeter.init(mSpatializer->speakerLayout());
   
     lens().fovy(45).eyeSep(0);
-    lens().far(1000).near(1);
+    lens().far(1000).near(0.1);
    // use a texture to control the alpha channel of each particle
     // //
     // pointTexture.create2D(256, 256, Texture::R8, Texture::RED, Texture::SHORT);
