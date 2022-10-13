@@ -29,16 +29,6 @@
 using namespace al;
 using namespace std;
 
-string slurp(string fileName) {
-  fstream file(fileName);
-  string returnValue = "";
-  while (file.good()) {
-    string line;
-    getline(file, line);
-    returnValue += line + "\n";
-  }
-  return returnValue;
-}
 struct SharedState {
   float meterValues[64] = {0};
 };
@@ -110,10 +100,10 @@ public:
       env = mEnvFollow.value();
     }
     rotate += env * 10;
-    g.color(c *env*100 + HSV(env*5, env*100, 1));
+    g.color(c + HSV(env*5, env*10, env*10));
     g.translate(pose().pos() * 3);
     g.rotate(init_rotate+rotate, init_angle);
-    g.scale(0.1, 3, 0.1);
+    g.scale(0.1, 1, 0.1);
     g.scale(0.1 + gain + env * 10);
     // g.polygonLine();
     g.draw(mesh);
@@ -283,11 +273,11 @@ public:
 
   void onDraw(Graphics &g) override {
     g.clear(0, 0, 0);
-    light.pos(0,0,0);
-    gl::depthTesting(true);
-    g.lighting(true);
-    g.blendAdd();
-    g.polygonMode(GL_FILL);
+    // light.pos(0,0,0);
+    // gl::depthTesting(true);
+    // g.lighting(true);
+    // g.blendAdd();
+    // g.polygonMode(GL_FILL);
     g.pushMatrix();
     if (isPrimary()) {
       // For simulator view from outside
