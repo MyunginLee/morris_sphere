@@ -103,7 +103,7 @@ public:
     g.color(c + HSV(env*5, env*10, env*10));
     g.translate(pose().pos() * 3);
     g.rotate(init_rotate+rotate, init_angle);
-    g.scale(0.1, 1, 0.1);
+    g.scale(0.1, 0.1, 0.1);
     g.scale(0.1 + gain + env * 10);
     // g.polygonLine();
     // g.draw(mesh);
