@@ -106,7 +106,7 @@ public:
     g.scale(0.1, 0.1, 0.1);
     g.scale(0.1 + gain + env * 10);
     // g.polygonLine();
-    // g.draw(mesh);
+    g.draw(mesh);
     // cout << global_time << endl;
   }
 
