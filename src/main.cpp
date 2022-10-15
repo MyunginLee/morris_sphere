@@ -99,11 +99,11 @@ public:
     if (isPrimary()) {
       env = mEnvFollow.value();
     }
-    rotate += env * 10;
-    g.color(c + HSV(env*5, env*10, env*10));
+    rotate += env * 1000;
+    g.color(c + HSV(env*5, env*100, env*10));
     g.translate(pose().pos() * 3);
     g.rotate(init_rotate+rotate, init_angle);
-    g.scale(0.03, 0.03, 0.03);
+    g.scale(0.02, 0.02, 0.02);
     g.scale(0.1 + gain + env * 10);
     // g.polygonLine();
     g.draw(mesh);
@@ -129,7 +129,7 @@ public:
                               automation.get());
     }
     auto colorIndex = automation.get()[0] - 'A';
-    c = HSV(colorIndex / 6.0f, 1.0f, 1.0f);
+    c = HSV(colorIndex / 6.0f, 0.0f, 1.0f);
   }
 
   void onTriggerOff() override {
