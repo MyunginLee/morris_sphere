@@ -104,7 +104,7 @@ public:
     g.translate(pose().pos() * 3);
     g.rotate(init_rotate+rotate, init_angle);
     g.scale(0.02, 0.02, 0.02);
-    g.scale(0.1 + gain + env * 10);
+    g.scale(0.1 + gain + env * 50);
     // g.polygonLine();
     g.draw(mesh);
     // cout << global_time << endl;
